@@ -2,10 +2,11 @@ variable "bucket_name" {}
 variable "ddb_table_arn" {}
 variable "ddb_table_stream_arn" {}
 variable "ddb_table_name" {}
+variable "lambda_function_name" {}
 
 resource "aws_lambda_function" "backup_ddb_table" {
   filename         = "${path.module}/backup_ddb_table_lambda.zip"
-  function_name    = "${var.ddb_table_name}-backups"
+  function_name    = "${var.lambda_function_name}"
   role             = "${aws_iam_role.lambda_role.arn}"
   handler          = "backup_ddb_table.lambda_handler"
   timeout          = "30"
@@ -27,7 +28,8 @@ resource "aws_lambda_event_source_mapping" "backup_ddb_table" {
 }
 
 resource "aws_iam_role" "lambda_role" {
-  name               = "${var.ddb_table_name}-backup-to-${var.bucket_name}"
+  name = "${var.ddb_table_name}-backup-to-${var.bucket_name}"
+
   assume_role_policy = <<POLICY
 {
   "Version": "2012-10-17",
@@ -46,8 +48,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "allow_log_creation" {
-  name   = "${var.ddb_table_name}-backup-to-${var.bucket_name}"
-  role   = "${aws_iam_role.lambda_role.id}"
+  name = "${var.ddb_table_name}-backup-to-${var.bucket_name}"
+  role = "${aws_iam_role.lambda_role.id}"
+
   policy = <<POLICY
 {
   "Version": "2012-10-17",

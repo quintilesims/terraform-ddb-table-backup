@@ -2,6 +2,7 @@ variable "dynamodb_table_arn" {}
 variable "dynamodb_table_stream_arn" {}
 variable "dynamodb_table_name" {}
 variable "backup_s3_bucket_name" {}
+variable "lambda_function_name" {}
 
 module "s3" {
   source      = "./s3/"
@@ -14,4 +15,5 @@ module "lambda" {
   ddb_table_stream_arn = "${var.dynamodb_table_stream_arn}"
   ddb_table_name       = "${var.dynamodb_table_name}"
   bucket_name          = "${var.backup_s3_bucket_name}"
-} 
+  lambda_function_name = "${var.lambda_function_name}"
+}

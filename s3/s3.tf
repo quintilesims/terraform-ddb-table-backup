@@ -11,6 +11,7 @@ resource "aws_s3_bucket" "backup_bucket" {
 
 resource "aws_s3_bucket_policy" "backup_bucket_policy" {
   bucket = "${aws_s3_bucket.backup_bucket.id}"
+
   policy = <<POLICY
 {
     "Version": "2008-10-17",
@@ -37,5 +38,5 @@ POLICY
 }
 
 output "s3_arn" {
- value = "${aws_s3_bucket.backup_bucket.arn}"
+  value = "${aws_s3_bucket.backup_bucket.arn}"
 }
