@@ -5,7 +5,7 @@ variable "ddb_table_name" {}
 
 resource "aws_lambda_function" "backup_ddb_table" {
   filename         = "${path.module}/backup_ddb_table_lambda.zip"
-  function_name    = "${var.ddb_table_name}-backup-to-${var.bucket_name}"
+  function_name    = "${var.ddb_table_name}-backups"
   role             = "${aws_iam_role.lambda_role.arn}"
   handler          = "backup_ddb_table.lambda_handler"
   timeout          = "30"
